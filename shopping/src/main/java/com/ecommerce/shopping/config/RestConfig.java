@@ -1,7 +1,9 @@
 package com.ecommerce.shopping.config;
 
+import com.ecommerce.shopping.model.Country;
 import com.ecommerce.shopping.model.Product;
 import com.ecommerce.shopping.model.ProductCategory;
+import com.ecommerce.shopping.model.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -27,13 +29,19 @@ public class RestConfig implements RepositoryRestConfigurer {
                 .withItemExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions))
                 .withCollectionExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions));
 
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions))
-                .withCollectionExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions));
-
+        disableHttpMethods(ProductCategory.class,config, unsupportedActions);
+        disableHttpMethods(Product.class,config, unsupportedActions);
+        disableHttpMethods(State.class,config, unsupportedActions);
+        disableHttpMethods(Country.class,config, unsupportedActions);
         //calling internal helper method to expose id's
         exposeId(config);
+    }
+
+    private void disableHttpMethods(Class className ,RepositoryRestConfiguration config, HttpMethod[] unsupportedActions) {
+        config.getExposureConfiguration()
+                .forDomainType(className)
+                .withItemExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions))
+                .withCollectionExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions));
     }
 
     public void exposeId(RepositoryRestConfiguration repositoryRestConfiguration){
