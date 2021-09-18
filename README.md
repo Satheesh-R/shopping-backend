@@ -6,10 +6,12 @@ For building and running the application you need:
 
 - [JDK 11](https://www.oracle.com/in/java/technologies/javase-jdk11-downloads.html)
 - [Maven 3.3+](https://maven.apache.org)
+- [MySQL](https://www.mysql.com/)
 
 ## Running the application locally
 
-There are several ways to run a Spring Boot application on your local machine. One way is to execute the `main` method in the `ShoppingApplication.java` class from your IDE.
+1. Run data.sql in MySQL workshop or shell
+2. There are several ways to run a Spring Boot application on your local machine. One way is to execute the `main` method in the `ShoppingApplication.java` class from your IDE.
 
 Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
 
