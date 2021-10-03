@@ -5,6 +5,7 @@ import com.ecommerce.shopping.model.Product;
 import com.ecommerce.shopping.model.ProductCategory;
 import com.ecommerce.shopping.model.State;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -19,11 +20,14 @@ import java.util.Set;
 
 @Configuration
 public class RestConfig implements RepositoryRestConfigurer {
+
+    @Value("${allowed.origins}")
+    private String[] allowedOrigins;
     @Autowired
     private EntityManager entityManager;
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        HttpMethod[] unsupportedActions = {HttpMethod.PUT,HttpMethod.POST,HttpMethod.DELETE};
+        HttpMethod[] unsupportedActions = {HttpMethod.PUT,HttpMethod.POST,HttpMethod.DELETE,HttpMethod.PATCH};
         config.getExposureConfiguration()
                 .forDomainType(Product.class)
                 .withItemExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions))
@@ -35,6 +39,9 @@ public class RestConfig implements RepositoryRestConfigurer {
         disableHttpMethods(Country.class,config, unsupportedActions);
         //calling internal helper method to expose id's
         exposeId(config);
+        //configure cors mapping
+        cors.addMapping(config.getBasePath() + "/**")
+                .allowedOrigins(allowedOrigins);
     }
 
     private void disableHttpMethods(Class className ,RepositoryRestConfiguration config, HttpMethod[] unsupportedActions) {
