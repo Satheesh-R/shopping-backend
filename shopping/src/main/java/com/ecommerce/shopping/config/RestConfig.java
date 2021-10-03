@@ -1,9 +1,6 @@
 package com.ecommerce.shopping.config;
 
-import com.ecommerce.shopping.model.Country;
-import com.ecommerce.shopping.model.Product;
-import com.ecommerce.shopping.model.ProductCategory;
-import com.ecommerce.shopping.model.State;
+import com.ecommerce.shopping.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -28,15 +25,12 @@ public class RestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] unsupportedActions = {HttpMethod.PUT,HttpMethod.POST,HttpMethod.DELETE,HttpMethod.PATCH};
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions))
-                .withCollectionExposure((metadata,httpMethods) -> httpMethods.disable(unsupportedActions));
-
+        //disabling PUT,POST,DELETE,PATCH
         disableHttpMethods(ProductCategory.class,config, unsupportedActions);
         disableHttpMethods(Product.class,config, unsupportedActions);
         disableHttpMethods(State.class,config, unsupportedActions);
         disableHttpMethods(Country.class,config, unsupportedActions);
+        disableHttpMethods(Order.class,config,unsupportedActions);
         //calling internal helper method to expose id's
         exposeId(config);
         //configure cors mapping
