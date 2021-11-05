@@ -7,6 +7,7 @@ For building and running the application you need:
 - [JDK 11](https://www.oracle.com/in/java/technologies/javase-jdk11-downloads.html)
 - [Maven 3.3+](https://maven.apache.org)
 - [MySQL](https://www.mysql.com/)
+- [Okta Devloper Account](https://www.okta.com/free-trial/)
 
 ## Running the application locally
 
